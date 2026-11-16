@@ -1,0 +1,62 @@
+pipeline:
+  name: STO Policy High Critical Over Five
+  identifier: STO_Policy_High_Critical_Over_Five
+  # REPLACE
+  projectIdentifier: <YOUR_PROJECT_IDENTIFIER>
+  # REPLACE
+  orgIdentifier: <YOUR_ORG_IDENTIFIER>
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: <+input>
+        repoName: harness-community/sto-tidbits-policy-enforcement
+        build:
+          type: branch
+          spec:
+            branch: main
+  stages:
+    - stage:
+        name: Scan
+        identifier: scan
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: AquaTrivy
+                  name: Trivy SCA
+                  identifier: trivy_sca
+                  spec:
+                    mode: orchestration
+                    config: fs
+                    target:
+                      type: repository
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+                      fail_on_severity: none
+                      args:
+                        cli: "--scanners vuln"
+                    privileged: true
+                    repository:
+                      type: local
+                    sbom:
+                      format: spdx-json
+                  enforce:
+                    policySets:
+                      - STO_High_Critical_Over_Five
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: MarkAsFailure
