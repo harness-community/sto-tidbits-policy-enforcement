@@ -1,8 +1,16 @@
-# Intentionally pinned to versions with known CRITICAL/HIGH CVEs so the
-# High + Critical count is well above the policy threshold of 5.
-# Do not copy this file into a real project.
-flask==1.0
-pyyaml==5.3.1
-requests==2.19.0
-urllib3==1.24.1
-jinja2==2.10
+# Intentionally vulnerable. Do not copy this file into a real project.
+django==1.11.29
+pillow==6.2.0
+pyyaml==5.1
+cryptography==2.3
+jinja2==2.8
+lxml==4.2.1
+werkzeug==0.14.1
+urllib3==1.23
+requests==2.9.1
+flask==0.12.2
+paramiko==2.0.0
+pycrypto==2.6.1
+pyopenssl==17.5.0
+pyjwt==1.5.3
+rsa==3.4.2
